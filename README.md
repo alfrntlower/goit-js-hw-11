@@ -2,7 +2,5 @@ goit-js-hw-11
 
 https://alfrntlower.github.io/goit-js-hw-11/
 
-Задание - поиск изображений
-
-Создай фронтенд часть приложения поиска и просмотра изображений по ключевому слову. Добавь
-оформление элементов интерфейса. Посмотри демо видео работы приложения.
+Task - image search
+Build a front-end part of a keyword search and image viewer application. Add some decoration to the interface elements.
