@@ -29,6 +29,7 @@ function onSearch(evt) {
             if (pictures.hits.length === 0) {
                 Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
                 console.log('Sorry, there are no images matching your search query. Please try again.');
+                return;
             }
 
             Notiflix.Notify.success(`Hooray! We found ${pictures.totalHits} images.`);
@@ -71,8 +72,6 @@ function fetchPictures(pictures) {
 
 
 }
-
-
 
 function onFetchError(error) {
     Notiflix.Notify.failure(`Oops, there is no pictures with that name`);
