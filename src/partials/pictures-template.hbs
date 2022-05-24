@@ -1,0 +1,18 @@
+{{#each this}}
+    <div class="gallery__item">
+      <a class="gallery__link" href="{{largeImageURL}}">
+        <img
+          class="gallery__image"
+          src="{{webformatURL}}"
+          alt="{{tags}}"
+          width="250"
+        />
+        <div class="gallery_description">
+          <p class = "gallery_description__info">Likes <span class = "gallery_description__date">{{likes}}</span></p>
+          <p class = "gallery_description__info">Views <span class = "gallery_description__date">{{views}}</span></p>
+          <p class = "gallery_description__info">Comments <span class = "gallery_description__date">{{comments}}</span></p>
+          <p class = "gallery_description__info">Downloads <span class = "gallery_description__date">{{downloads}}</span></p>
+        </div>
+      </a>
+    </div>
+    {{/each}}

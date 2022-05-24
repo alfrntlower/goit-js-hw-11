@@ -39,6 +39,82 @@ input {
   outline: 0 !important;
 }
 
+img {
+  display: blok;
+  max-width: 100%;
+  height: auto;
+}
+
+.gallery {
+  display: grid;
+  max-width: 1140px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-auto-rows: 240px;
+  grid-gap: 12px;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.gallery__item {
+  margin-bottom: 50px;
+  margin-top: 15px;
+
+  //position: relative;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.gallery__item:hover {
+  transform: scale(1.03);
+}
+
+.gallery__image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform var(--animation-duration) var(--timing-function);
+
+  display: block;
+  // max-width: 100%;
+  //height: auto;
+}
+
+.gallery__link {
+  display: block;
+  text-decoration: none;
+  height: 100%;
+}
+
+.gallery__link:hover {
+  cursor: zoom-in;
+}
+
+.gallery_description {
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.gallery_description__info {
+  font-weight: bold;
+  display: block;
+  color: black;
+  margin-bottom: 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gallery_description__date {
+  font-weight: normal;
+}
+
 .container {
   overflow: hidden;
   width: 300px;
@@ -51,7 +127,7 @@ input {
   height: 50px;
   background: #2b303b;
   border: none;
-  border-color: red;
+  // border-color: red;
   font-size: 10pt;
   float: left;
   color: #fff;
@@ -116,4 +192,29 @@ input {
 
 .container:hover button.icon:hover {
   background: white;
+}
+
+button.is-hidden {
+  display: none;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.load-more-btn {
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: #fff;
+  height: 30px;
+  width: 100px;
+  color: #4f5b66;
+  border-radius: 5px;
+
+  font-size: 10pt;
 }
