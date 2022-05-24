@@ -20,7 +20,7 @@
 
 .example .background {
   height: 240px;
-  // Путь к изображениям из SASS-файла всегда такой, как из папки css
+  // The path to images from a SASS file is always the same as from the css folder
   background-image: url('../images/demo.jpg');
   background-size: cover;
   background-position: center;
@@ -78,8 +78,6 @@ img {
   transition: transform var(--animation-duration) var(--timing-function);
 
   display: block;
-  // max-width: 100%;
-  //height: auto;
 }
 
 .gallery__link {
@@ -127,7 +125,7 @@ img {
   height: 50px;
   background: #2b303b;
   border: none;
-  // border-color: red;
+
   font-size: 10pt;
   float: left;
   color: #fff;
