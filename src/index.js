@@ -15,10 +15,10 @@ const picturesContainer = document.querySelector('.pictures-container');
 const loadMoreBtn = document.querySelector('.load-more-btn');
 
 searchForm.addEventListener('submit', onSearch);
-loadMoreBtn.addEventListener('click', fetchPictures);
+loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 
 function onSearch(evt) {
-    
+
     evt.preventDefault();
 
     console.log(searchInput.value);
@@ -29,23 +29,31 @@ function onSearch(evt) {
             if (pictures.hits.length === 0) {
                 Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
                 console.log('Sorry, there are no images matching your search query. Please try again.');
+                clearPicturesContainer();
+                loadMoreBtn.classList.add('is-hidden');
                 return;
             }
 
             Notiflix.Notify.success(`Hooray! We found ${pictures.totalHits} images.`);
 
+            //resetPage();
+            //clearPicturesContainer();
             renderPictures(pictures);
+            
+            
             console.log(pictures);
             loadMoreBtn.classList.remove('is-hidden');
 
         }).catch(onFetchError);
+    
 
 }
 
 function renderPictures(pictures) {
     
-    const markup = picturesTemplate(pictures.hits);
-    picturesContainer.innerHTML = markup;
+    // const markup = picturesTemplate(pictures.hits);
+    // picturesContainer.innerHTML = markup;
+    picturesContainer.insertAdjacentHTML('beforeend', picturesTemplate(pictures.hits))
 
     let gallery = new SimpleLightbox('.pictures-container a', {
         captionsData: 'alt',
@@ -56,21 +64,35 @@ function renderPictures(pictures) {
 }
 
 
-function fetchPictures(pictures) {
+async function fetchPictures(pictures) {
 
     let page = 1;
 
-    return fetch(`${BASE_URL}?key=${API_KEY}&q=${pictures}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${page}&pretty=true`).then(response => {
+    return await fetch(`${BASE_URL}?key=${API_KEY}&q=${pictures}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${page}&pretty=true`).then(response => {
         if (!response.ok) {
             throw new Error(response.status);
         }
 
         page += 1;
+        console.log('page', page);
         return response.json();
     });
 
+}
 
+function onLoadMoreBtn(evt) {
+    console.log("LOAD MORE CLICK");
 
+    onSearch(evt);
+
+}
+
+function resetPage() {
+    page = 1;
+}
+
+function clearPicturesContainer() {
+    picturesContainer.innerHTML = '';
 }
 
 function onFetchError(error) {
