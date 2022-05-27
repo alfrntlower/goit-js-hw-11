@@ -17,42 +17,23 @@ const loadMoreBtn = document.querySelector('.load-more-btn');
 searchForm.addEventListener('submit', onSearch);
 loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 
+let page = 1;
+
 function onSearch(evt) {
 
     evt.preventDefault();
 
-    console.log(searchInput.value);
+    let searchInputKey = searchInput.value;
 
-    fetchPictures(searchInput.value).
-        then((pictures) => {
+    resetPage();
+    clearPicturesContainer();
 
-            if (pictures.hits.length === 0) {
-                Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
-                console.log('Sorry, there are no images matching your search query. Please try again.');
-                clearPicturesContainer();
-                loadMoreBtn.classList.add('is-hidden');
-                return;
-            }
-
-            Notiflix.Notify.success(`Hooray! We found ${pictures.totalHits} images.`);
-
-            //resetPage();
-            //clearPicturesContainer();
-            renderPictures(pictures);
-            
-            
-            console.log(pictures);
-            loadMoreBtn.classList.remove('is-hidden');
-
-        }).catch(onFetchError);
-    
+    fetchPictures(searchInputKey);
 
 }
 
 function renderPictures(pictures) {
-    
-    // const markup = picturesTemplate(pictures.hits);
-    // picturesContainer.innerHTML = markup;
+
     picturesContainer.insertAdjacentHTML('beforeend', picturesTemplate(pictures.hits))
 
     let gallery = new SimpleLightbox('.pictures-container a', {
@@ -63,27 +44,30 @@ function renderPictures(pictures) {
 
 }
 
-
 async function fetchPictures(pictures) {
 
-    let page = 1;
+    return await fetchP(pictures).then((pictures) => {
 
-    return await fetch(`${BASE_URL}?key=${API_KEY}&q=${pictures}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${page}&pretty=true`).then(response => {
-        if (!response.ok) {
-            throw new Error(response.status);
+        if (pictures.hits.length === 0 || searchInput.value === " " ) {
+            Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
+            console.log('Sorry, there are no images matching your search query. Please try again.');
+            clearPicturesContainer();
+            loadMoreBtn.classList.add('is-hidden');
+            return;
         }
 
-        page += 1;
-        console.log('page', page);
-        return response.json();
-    });
+        Notiflix.Notify.success(`Hooray! We found ${pictures.totalHits} images.`);
+        console.log(pictures);
+        loadMoreBtn.classList.remove('is-hidden');
+
+        renderPictures(pictures);
+    }).catch(onFetchError);
 
 }
 
 function onLoadMoreBtn(evt) {
-    console.log("LOAD MORE CLICK");
 
-    onSearch(evt);
+    fetchPictures(searchInput.value);
 
 }
 
@@ -99,3 +83,15 @@ function onFetchError(error) {
     Notiflix.Notify.failure(`Oops, there is no pictures with that name`);
 }
 
+
+function fetchP(pictures) {
+    return fetch(`${BASE_URL}?key=${API_KEY}&q=${pictures}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${page}&pretty=true`).then(response => {
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+
+        page += 1;
+        console.log('page', page);
+        return response.json();
+    })
+}
