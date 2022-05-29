@@ -33,8 +33,9 @@ function onSearch(evt) {
     clearPicturesContainer();
 
     // fetchPictures(searchInputKey);
-    PictureService.fetchPictures(searchInputKey).
+    PictureService.fetchPictures(searchInputKey, searchInputKey).
         then(pictures => {
+
             renderPictures(pictures);
             console.log("AFTER OBJ",pictures);
     }).catch(onFetchError);

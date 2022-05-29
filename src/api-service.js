@@ -7,11 +7,12 @@ const BASE_URL = 'https://pixabay.com/api/';
 export const PictureService = {
 
     page: 1,
-    async  fetchPictures(pictures) {
+    async  fetchPictures(pictures,searchInput) {
 
         return await this.fetchP(pictures).then((pictures) => {
 
-            if (pictures.hits.length === 0 || pictures === " " || pictures === "" ) {
+            if (pictures.hits.length === 0 || searchInput === '' || searchInput === ' ') {
+                
                 Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
                 console.log('Sorry, there are no images matching your search query. Please try again.');
                 //this.clearPicturesContainer();
