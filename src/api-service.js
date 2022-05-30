@@ -7,48 +7,41 @@ const BASE_URL = 'https://pixabay.com/api/';
 export const PictureService = {
 
     page: 1,
-    async  fetchPictures(pictures,searchInput) {
+    searchQuery: '',
+    per_page: 12,
 
-        return await this.fetchP(pictures).then((pictures) => {
+    async fetchPictures() {
+        
+        try {
 
-            if (pictures.hits.length === 0 || searchInput === '' || searchInput === ' ') {
-                
+            const response = await fetch(`${BASE_URL}?key=${API_KEY}&q=${this.query}&image_type=photo&page=${this.page}&per_page=${this.per_page}`,);
+            const data = await response.json();
+
+            if (data.hits.length === 0) {
                 Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
-                console.log('Sorry, there are no images matching your search query. Please try again.');
-                //this.clearPicturesContainer();
-                loadMoreBtn.classList.add('is-hidden');
                 return;
             }
 
-            Notiflix.Notify.success(`Hooray! We found ${pictures.totalHits} images.`);
-            console.log(pictures);
-            //loadMoreBtn.classList.remove('is-hidden');
+            this.incrementPage();
+            return data;
 
-            //renderPictures(pictures);
-        }).catch(); //onFetchError
-
+        } catch (error) {
+            console.error(error);
+        }
     },
-    fetchP(pictures) {
-        return fetch(`${BASE_URL}?key=${API_KEY}&q=${pictures}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}&pretty=true`).then(response => {
-            if (!response.ok) {
-                throw new Error(response.status);
-            }
 
-            this.page += 1;
-            console.log('page', this.page);
-            return response.json();
-        })
-    },
     resetPage() {
         this.page = 1;
-    },   
-
-    onFetchError(error) {
-    Notiflix.Notify.failure(`Oops, there is no pictures with that name`);
+    },
+    incrementPage() {
+        this.page += 1;
     },
 
+    set query(value) {
+        this.searchQuery = value;
+    },
+    get query() {
+        return this.searchQuery;
+    },
 
-
-
-
-}
+};
