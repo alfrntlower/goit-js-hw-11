@@ -26,8 +26,9 @@ function onSearch(evt) {
     PictureService.resetPage();
     clearPicturesContainer();
 
-    if (searchInputKey === " " || searchInputKey === "" ) {
+    if (!searchInputKey) {
         Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
+        loadMoreBtn.classList.add('is-hidden');
         return;
     }
     
@@ -36,8 +37,13 @@ function onSearch(evt) {
         .then((data) => {
             //console.log(data);
             Notiflix.Notify.success(`Hooray! We found ${data.total} images.`);
+
             loadMoreBtn.classList.remove('is-hidden');
             renderPictures(data);
+
+            if (data.total < PictureService.per_page) {
+                loadMoreBtn.classList.add('is-hidden');
+            }  
 
         })
         .catch(onFetchError);
@@ -58,11 +64,14 @@ function renderPictures(pictures) {
 
 function onLoadMoreBtn(evt) {
     
-    //PictureService.fetchPictures();
     PictureService.fetchPictures()
         .then((data) => {
             loadMoreBtn.classList.remove('is-hidden');
             renderPictures(data);
+
+            if ((PictureService.page - 1) * PictureService.per_page > data.total) {
+                loadMoreBtn.classList.add('is-hidden');
+            }
 
         })
         .catch(onFetchError);
@@ -74,6 +83,7 @@ function clearPicturesContainer() {
 }
 
 function onFetchError(error) {
-    Notiflix.Notify.failure(`Oops, there is no pictures with that name`);
+    //Notiflix.Notify.failure(`Oops, there is no pictures with that name`);
+    loadMoreBtn.classList.add('is-hidden');
 }
 
